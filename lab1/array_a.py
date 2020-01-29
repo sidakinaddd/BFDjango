@@ -1,12 +1,13 @@
-n=int(input())
-arr=[]
+a = int(input())
 
-i=1
-while i<=n:
-	k=int(input())
-	arr.append(k)
-	i=i+1
+arr = []
+ans = ""
+Arr = input().split()
 
-for j in range(0,len(arr)):
-	if j%2==0:
-		print(arr[j],' ')
+for i in range(len(Arr)):
+  Arr[i] = int(Arr[i])
+
+for i in range(0,len(Arr), 1):
+  if(i%2 == 0):
+    ans += (str(Arr[i]) + " ")
+print(ans)
