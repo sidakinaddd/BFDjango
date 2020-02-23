@@ -27,7 +27,7 @@ class Item(models.Model):
 
     title = models.CharField(max_length=250)
     created_date = models.DateTimeField(default=datetime.datetime.now)
-    priority = models.IntegerField(choices=PRIORITY_CHOICES,default=2)
+    priority = models.IntegerField(choices=PRIORITY_CHOICES, default=2)
     completed = models.BooleanField(default=False)
     todo_list = models.ForeignKey(List, on_delete=models.CASCADE)
 
