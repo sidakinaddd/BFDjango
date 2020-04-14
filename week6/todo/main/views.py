@@ -3,7 +3,7 @@ from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import ToDoList, ToDo
-from .serializers import TodoListSerializer, TodoSerializer, TodoListsSerializer,TodosSerializer
+from .serializers import TodoListSerializer, TodoSerializer
 from django.http import Http404
 
 class ToDoListsView(generics.ListCreateAPIView):
@@ -13,7 +13,7 @@ class ToDoListsView(generics.ListCreateAPIView):
         return ToDoList.objects.for_user(user=self.request.user)
 
     def get_serializer_class(self):
-        return TodoListsSerializer
+        return TodoListSerializer
 
     def perform_create(self, serializer):
         user = self.request.user
@@ -37,7 +37,7 @@ class ToDosView(generics.ListCreateAPIView):
         return ToDo.objects.filter(todo_list=self.kwargs.get('pk'))
 
     def get_serializer_class(self):
-        return TodosSerializer
+        return TodoSerializer
 
     def perform_create(self, serializer):
         list_id = self.kwargs.get('pk')

@@ -14,8 +14,10 @@ urlpatterns = [
     path('<int:pk>/todo/<int:pk2>/', ToDoView.as_view()),
     path('cbv/', views.ToDoListsCBV.as_view()),
     path('cbv/<int:pk>/', views.ToDoListsCBV.as_view()),
-    path('mix/', ToDoListsView.as_view()),
-    path('mix/<int:pk>/', ToDoListView.as_view())
+    path('mix/', TodoListsView.as_view()),
+
+
+
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)

@@ -1,39 +1,20 @@
 from rest_framework import generics
-from rest_framework import mixins
-from ..serializers import TodoListsSerializer, TodoListSerializer
-from ..models import ToDoList
+from rest_framework import mixins, viewsets
+from ..serializers import TodoListSerializer
+from ..models import ToDoList,ToDo
 from rest_framework.permissions import IsAuthenticated
 
-class TodoListsView(generics.GenericAPIView,
-                   mixins.ListModelMixin,
-                   mixins.CreateModelMixin,
-                   mixins.UpdateModelMixin,
-                    mixins.RetrieveModelMixin,):
-    permission_classes = (IsAuthenticated,)
-    serializer_class = TodoListsSerializer
-
-    def get_queryset(self):
-        return ToDoList.objects.for_user(user=self.request.user)
-    lookup_field = 'pk'
-
-    def get(self, request):
-        return self.list(request)
-
-    def post(self, request):
-        return self.create(request)
-
-    def put(self, request, pk):
-        return self.update(request, pk)
-
-
-class TodoListView(generics.GenericAPIView,
-                    mixins.UpdateModelMixin,
-                    mixins.RetrieveModelMixin,):
-    permission_classes = (IsAuthenticated,)
+class TodoListsView(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = ToDoList.objects.all()
     serializer_class = TodoListSerializer
 
-    def get_one(self, request, pk):
-        return self.retrieve(request, pk)
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
 
-    def put(self, request, pk):
-        return self.update(request, pk)
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)

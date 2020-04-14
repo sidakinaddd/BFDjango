@@ -3,7 +3,7 @@ from rest_framework import status
 
 from rest_framework.views import APIView
 from ..models import ToDoList
-from ..serializers import TodoListsSerializer, TodoListSerializer
+from ..serializers import TodoListSerializer
 from django.http import Http404
 
 
@@ -13,7 +13,7 @@ from django.http import Http404
 class ToDoListsCBV(APIView):
     def get(self, request, format=None):
         todo_lists = ToDoList.objects.for_user(user=self.request.user)
-        serializer = TodoListsSerializer(todo_lists, many=True)
+        serializer = TodoListSerializer(todo_lists, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
