@@ -11,7 +11,7 @@ def login(request):
     username = body.get('username')
     password = body.get('password')
 
-    user = auth.authenticate(username=username,password=password)
+    user = auth.authenticate(username=username, password=password)
 
     if user is not None and user.is_active:
         auth.login(request, user)
