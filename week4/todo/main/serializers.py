@@ -4,20 +4,36 @@ from auth_.serializers import UserSerializer
 
 
 class TodoListSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(read_only=True)
-    owner = UserSerializer(required=False)
-    created_at = serializers.DateTimeField(required=False)
+    owner = UserSerializer(read_only=True)
 
     class Meta:
         model = ToDoList
         fields = ('id', 'name', 'owner', 'created_at')
 
 
-class TodoSerializer(serializers.ModelSerializer):
+class TodoListsSerializer(serializers.ModelSerializer):
+    # owner = UserSerializer(read_only=True)
+
+    class Meta:
+        model = ToDoList
+        fields = ('id', 'name')
+
+
+class TodosSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    todo_list = TodoListSerializer(required=False)
-    is_done = serializers.BooleanField(required=True)
+    # todo_list = TodoListSerializer(read_only=True)
+    is_done = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = ToDo
-        fields = ('id', 'name', 'todo_list', 'is_done')
+        fields = ('id', 'name', 'is_done')
+
+
+class TodoSerializer(serializers.ModelSerializer):
+    todo_list = TodoListSerializer(read_only=True)
+
+    # is_done = serializers.BooleanField(read_only=True)
+
+    class Meta:
+        model = ToDo
+        fields = ('id', 'name', 'is_done', 'created_at', 'finish_on', 'is_done', 'todo_list')

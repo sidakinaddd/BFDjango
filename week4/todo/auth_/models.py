@@ -16,7 +16,12 @@ class MyUserManager(UserManager):
 
 class MyUser(AbstractUser):
     pass
-
+    # USER_ROLES = (
+    #     (1, 'admin'),
+    #     (2, 'moderator'),
+    #     (3, 'editor'),
+    # )
+    # role = models.IntegerField(choices=USER_ROLES)
 class MyAbstractUser(AbstractBaseUser,PermissionsMixin):
     username = models.CharField(max_length=100, unique=True)
     first_name = models.CharField(50, blank=True)
