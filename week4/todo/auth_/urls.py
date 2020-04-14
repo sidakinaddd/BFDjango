@@ -4,6 +4,7 @@ from rest_framework_jwt.views import obtain_jwt_token
 from rest_framework.routers import DefaultRouter
 
 from .views import RegisterUser, UserViewSet
+
 urlpatterns = [
     path('login/', obtain_jwt_token),
     path('register/', RegisterUser.as_view())

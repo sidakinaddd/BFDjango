@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import ToDo, ToDoList
-from ..auth_.serializers import UserSerializer
+from auth_.serializers import UserSerializer
+
 
 class TodoListSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
@@ -11,6 +12,7 @@ class TodoListSerializer(serializers.ModelSerializer):
         model = ToDoList
         fields = ('id', 'name', 'owner', 'created_at')
 
+
 class TodoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     todo_list = TodoListSerializer(required=False)
@@ -19,4 +21,3 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = ToDo
         fields = ('id', 'name', 'todo_list', 'is_done')
-

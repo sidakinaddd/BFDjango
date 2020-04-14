@@ -1,10 +1,14 @@
 from django.db import models
 from datetime import datetime
 from auth_.models import MyUser
+from django.contrib import admin
+
+
 # Create your models here.
 class TodoListManager(models.Model):
     def for_user(self, user):
         return self.filter(owner=user)
+
 
 class ToDoList(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -17,8 +21,10 @@ class ToDoList(models.Model):
         verbose_name_plural = 'TodoLists'
 
 
+
 class ToDoManager(models.Model):
     pass
+
 
 class ToDo(models.Model):
     name = models.CharField(max_length=100, default='')
@@ -35,3 +41,7 @@ class ToDo(models.Model):
 
     def __str__(self):
         return f'{self.name}, in {self.todo_list}'
+
+
+
+
