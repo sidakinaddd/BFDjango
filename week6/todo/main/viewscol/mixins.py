@@ -26,13 +26,14 @@ class TodoListTodosView(mixins.CreateModelMixin,
                         mixins.ListModelMixin,
                         viewsets.GenericViewSet):
     permission_classes = (IsAuthenticated,)
-    serializer_class = TodoSerializer
 
     def get_queryset(self):
-        return ToDo.objects.filter(todo_list=self.kwargs.get('pk'))
+        todos = ToDo.objects.filter(todo_list=ToDoList.objects.get(id=self.kwargs.get('pk')))
+        return todos
 
+    def get_serializer_class(self):
+        return TodoSerializer
 
     def perform_create(self, serializer):
         list_id = self.kwargs.get('pk')
         serializer.save(list=ToDoList.objects.get(id=list_id))
-

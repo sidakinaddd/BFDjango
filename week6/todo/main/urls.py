@@ -9,8 +9,8 @@ from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
-router.register('lists', TodoListsView, basename='list')
-router.register('lists/<int:pk>/todos', TodoListTodosView, basename='list-todo')
+router.register(r'lists', TodoListsView, basename='lists')
+router.register(r'lists/<int:pk>/todos', TodoListTodosView, basename='list-todos')
 
 urlpatterns = [
     path('', ToDoListsView.as_view()),
