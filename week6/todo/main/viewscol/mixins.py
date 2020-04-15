@@ -2,7 +2,8 @@ from rest_framework import generics
 from rest_framework import mixins, viewsets
 from ..serializers import TodoListSerializer, TodoSerializer
 from ..models import ToDoList, ToDo
-
+from django.http import Http404
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 
 
@@ -28,9 +29,7 @@ class TodoListTodosView(mixins.CreateModelMixin,
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        todo_list = ToDoList.objects.get(id=self.kwargs.get('pk'))
-        todos = todo_list.todo_set.all()
-        return todos
+        return ToDo.objects.filter(todo_list=ToDoList.objects.get(id=self.kwargs.get('pk')))
 
     def get_serializer_class(self):
         return TodoSerializer
@@ -38,3 +37,5 @@ class TodoListTodosView(mixins.CreateModelMixin,
     def perform_create(self, serializer):
         list_id = self.kwargs.get('pk')
         serializer.save(list=ToDoList.objects.get(id=list_id))
+
+

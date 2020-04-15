@@ -34,7 +34,7 @@ class ToDosView(generics.ListCreateAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        return ToDo.objects.filter(todo_list=self.kwargs.get('pk'))
+        return ToDo.objects.filter(todo_list=ToDoList.objects.get(id=self.kwargs.get('pk')))
 
     def get_serializer_class(self):
         return TodoSerializer
