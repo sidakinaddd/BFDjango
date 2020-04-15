@@ -4,12 +4,13 @@ from rest_framework import routers
 from .views import ToDoListView, ToDoListsView,ToDosView, ToDoView
 from .viewscol.views import ToDoListCBV, ToDoListsCBV
 from .viewscol import views
-from .viewscol.mixins import TodoListsView
+from .viewscol.mixins import TodoListsView,TodoListTodosView
 from django.urls import path
 from rest_framework.urlpatterns import format_suffix_patterns
 
 router = routers.DefaultRouter()
-router.register('mixin', TodoListsView, basename='api')
+router.register('lists', TodoListsView, basename='list')
+router.register('lists/<int:pk>/todos', TodoListTodosView, basename='list-todo')
 
 urlpatterns = [
     path('', ToDoListsView.as_view()),
