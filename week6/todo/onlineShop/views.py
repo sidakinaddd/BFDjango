@@ -1,25 +1,15 @@
+from django.http import Http404
+
+from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
 from rest_framework import mixins
+from rest_framework.response import Response
+from rest_framework.viewsets import ModelViewSet
 
 from .models import Product, Category
 from .serializers import ProductSerializer, CategorySerializer
 
-
-# Create your views here.
-
-# class CategoryViewSet(NestedViewSetMixin,ModelViewSet):
-#     serializer_class = CategorySerializer
-#     permission_classes = (IsAuthenticated,)
-#
-#     def get_queryset(self):
-#         return Category.objects.for_user(user=self.request.user)
-#
-#
-# class ProductViewSet(NestedViewSetMixin,ModelViewSet):
-#     serializer_class = ProductSerializer
-#     permission_classes = (IsAuthenticated, )
-#     queryset = Product.objects.all()
 
 class CategoryViewSet(mixins.ListModelMixin,
                       mixins.CreateModelMixin,
@@ -35,16 +25,21 @@ class CategoryViewSet(mixins.ListModelMixin,
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
+    @action(methods=['Get'], detail=True)
+    def products(self, request,pk):
+        data =Product.objects.filter(category=Category.objects.get(id=self.kwargs['pk']))
+        serializer = ProductSerializer(data, many=True)
+        return Response(serializer.data)
 
-class ProductViewSet(mixins.ListModelMixin,
-                     mixins.CreateModelMixin,
-                     viewsets.GenericViewSet):
+
+
+class ProductsViewSet(mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin,
+                      viewsets.GenericViewSet):
     serializer_class = ProductSerializer
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
+
 
     def get_queryset(self):
-        return Product.objects.filter(category=Category.objects.get(id=3))
-
-    def perform_create(self, serializer):
-        category_id = self.kwargs.get('pk')
-        serializer.save(category=Category.objects.get(id=category_id))
+        return Product.objects.all()
