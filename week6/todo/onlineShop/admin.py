@@ -15,3 +15,5 @@ class CategoryAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(owmer=request.user)
+
+    # номера зантые не занятые 2 менеджера

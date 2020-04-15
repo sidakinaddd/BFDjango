@@ -47,6 +47,7 @@ class ToDoView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
+        print(ToDo.objects.filter(todo_list=self.kwargs.get('pk'), id=self.kwargs.get('pk2')))
         return ToDo.objects.filter(todo_list=self.kwargs.get('pk'), id=self.kwargs.get('pk2'))
 
     def get_serializer_class(self):
