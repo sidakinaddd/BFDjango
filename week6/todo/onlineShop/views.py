@@ -43,3 +43,12 @@ class ProductsViewSet(mixins.RetrieveModelMixin,
 
     def get_queryset(self):
         return Product.objects.all()
+
+class ProductView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        return Product.objects.filter(category=Category.objects.get(id=self.kwargs.get('pk')), id=self.kwargs.get('pk2'))
+
+    def get_serializer_class(self):
+        return ProductSerializer
