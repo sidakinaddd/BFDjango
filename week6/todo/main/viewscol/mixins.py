@@ -28,7 +28,8 @@ class TodoListTodosView(mixins.CreateModelMixin,
     permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
-        todos = ToDo.objects.filter(todo_list=ToDoList.objects.get(id=self.kwargs.get('pk')))
+        todo_list = ToDoList.objects.get(id=self.kwargs.get('pk'))
+        todos = todo_list.todo_set.all()
         return todos
 
     def get_serializer_class(self):
