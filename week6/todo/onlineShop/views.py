@@ -33,22 +33,28 @@ class CategoryViewSet(mixins.ListModelMixin,
 
 
 
-class ProductsViewSet(mixins.RetrieveModelMixin,
-                      mixins.UpdateModelMixin,
-                      mixins.DestroyModelMixin,
-                      viewsets.GenericViewSet):
+# class ProductsViewSet(mixins.RetrieveModelMixin,
+#                       mixins.UpdateModelMixin,
+#                       mixins.DestroyModelMixin,
+#                       viewsets.GenericViewSet):
+#     serializer_class = ProductSerializer
+#     permission_classes = (IsAuthenticated,)
+#
+#
+#     def get_queryset(self):
+#         return Product.objects.all()
+
+class ProductView(generics.ListCreateAPIView):
     serializer_class = ProductSerializer
     permission_classes = (IsAuthenticated,)
 
-
     def get_queryset(self):
-        return Product.objects.all()
+        try:
+            category = Category.objects.for_user(user=self.request.user).get(id=self.kwargs['pk'])
+        except CategoryDoesNotExist:
+            raise Http404
 
-class ProductView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = (IsAuthenticated,)
+        queryset = Product.objects.filter(category=category,id =self.kwargs['pk2'])
+        return queryset
 
-    def get_queryset(self):
-        return Product.objects.filter(category=Category.objects.get(id=self.kwargs.get('pk')), id=self.kwargs.get('pk2'))
 
-    def get_serializer_class(self):
-        return ProductSerializer

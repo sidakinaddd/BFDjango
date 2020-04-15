@@ -8,9 +8,13 @@ class CategoryManager(models.Manager):
     def for_user(self,user):
         return self.filter(owner=user)
 
+
+
 class Category(models.Model):
     name= models.CharField(max_length=100)
     owner=models.ForeignKey(MyUser, on_delete=models.CASCADE)
+
+
     objects= CategoryManager()
 
     class Meta:

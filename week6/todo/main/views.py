@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics, mixins
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from .models import ToDoList, ToDo
 from .serializers import TodoListSerializer, TodoSerializer
 from django.http import Http404
