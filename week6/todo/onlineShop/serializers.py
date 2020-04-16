@@ -16,6 +16,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('id', 'name', 'owner','status','description')
+        read_only_fields = ['owner']
         validators = [
             UniqueTogetherValidator(
                 queryset=Category.objects.all(),
@@ -31,3 +32,4 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('id', 'name', 'category', 'description', 'price','status')
+
