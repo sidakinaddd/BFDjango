@@ -21,6 +21,6 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'status')
-
+    search_fields = ['name', 'status']
 # номера зантые не занятые 2 менеджера
 

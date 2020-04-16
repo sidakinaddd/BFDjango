@@ -14,7 +14,7 @@ from auth_.models import MyUser
 
 
 class BasicInfo(models.Model):
-    name = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=100)
 
     class Meta:
         abstract = True
@@ -42,7 +42,7 @@ class Category(BasicInfo):
     # )
     owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
-
+    description = models.CharField(max_length=255, null=True, blank=True)
     top_categories = TopCategories()
     not_top_categories = NotTopCategories()
     objects = CategoryManager()
