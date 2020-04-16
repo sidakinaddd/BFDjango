@@ -54,6 +54,18 @@ class Category(BasicInfo):
     def __str__(self):
         return self.name
 
+    @property
+    def information(self):
+        return self.name + ' ' + self.description
+
+    @classmethod
+    def get_count_of_top(cls):
+        return cls.top_categories.count()
+
+    @classmethod
+    def get_count_of_not_top(cls):
+        return cls.not_top_categories.count()
+
 
 class SoldOutProducts(models.Manager):
     def get_queryset(self):
@@ -76,7 +88,7 @@ class Product(BasicInfo):
     )
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     description = models.CharField(max_length=255)
-    price = models.IntegerField(default=0)
+    price = models.FloatField(default=0)
     status = models.IntegerField(choices=STATUS, default=2)
 
     sold_out_products = SoldOutProducts()
@@ -87,3 +99,23 @@ class Product(BasicInfo):
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
+
+    def __str__(self):
+        return self.name
+
+    #  discount
+    @property
+    def get_with_discount(self):
+        return self.price-10
+
+    @classmethod
+    def get_sold_out_products_count(cls):
+        return cls.sold_out_products.count()
+
+    @classmethod
+    def get_in_sell_products_count(cls):
+        return cls.in_sell_products.count()
+
+
+# b = Category()
+# b.get_count_of_top()

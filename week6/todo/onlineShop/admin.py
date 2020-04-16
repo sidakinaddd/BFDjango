@@ -7,16 +7,7 @@ from .models import Category, Product
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'status')
-    fieldsets = (
-        (None, {'fields': ('name', 'created_at')}),
-    )
-    search_fields = ['name']
 
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        return qs.filter(owmer=request.user)
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
