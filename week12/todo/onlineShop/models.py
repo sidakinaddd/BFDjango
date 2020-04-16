@@ -35,8 +35,8 @@ class Category(BasicInfo):
     owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
     description = models.CharField(max_length=255, null=True, blank=True)
-    image = models.ImageField(upload_to='home/dana/Рабочий стол/BFDjango/week12/todo/onlineShop/images', null=True)
-    attachment = models.FileField(upload_to='home/dana/Рабочий стол/BFDjango/week12/todo/onlineShop/files', null=True)
+    image = models.ImageField(upload_to='images', null=True)
+    attachment = models.FileField(upload_to='attachments', null=True)
 
     top_categories = TopCategories()
     not_top_categories = NotTopCategories()
