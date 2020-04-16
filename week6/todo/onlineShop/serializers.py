@@ -7,10 +7,11 @@ class CategorySerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField()
     owner = UserSerializer(read_only=True)
+    status = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Category
-        fields = ('id', 'name', 'owner')
+        fields = ('id', 'name', 'owner','status')
 
 
 class ProductSerializer(serializers.ModelSerializer):

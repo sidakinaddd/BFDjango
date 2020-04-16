@@ -21,7 +21,17 @@ class CategoryViewSet(mixins.ListModelMixin,
     serializer_class = CategorySerializer
 
     def get_queryset(self):
-        return Category.objects.for_user(user=self.request.user)
+        is_top = self.request.query_params.get('status', None)
+
+        if is_top == "True":
+            print(is_top)
+            return Category.top_categories.all()
+        elif is_top == "False":
+            print(is_top)
+            return Category.not_top_categories.all()
+        else:
+            return Category.objects.all()
+        # return Category.objects.for_user(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

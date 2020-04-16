@@ -20,13 +20,31 @@ class BasicInfo(models.Model):
         abstract = True
 
 
+class TopCategories(models.Manager):
+    def get_queryset(self):
+        return super(TopCategories, self).get_queryset().filter(status=True)
+
+
+class NotTopCategories(models.Manager):
+    def get_queryset(self):
+        return super(NotTopCategories, self).get_queryset().filter(status=False)
+
+
 class CategoryManager(models.Manager):
     def for_user(self, user):
         return self.filter(owner=user)
 
 
 class Category(BasicInfo):
+    # STATUS = (
+    #     (1, 'top'),
+    #     (2, 'not_top')
+    # )
     owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)
+
+    top_categories = TopCategories()
+    not_top_categories = NotTopCategories()
     objects = CategoryManager()
 
     class Meta:
@@ -39,12 +57,13 @@ class Category(BasicInfo):
 
 class SoldOutProducts(models.Manager):
     def get_queryset(self):
-        return self.filter(status=1)
+        return super(SoldOutProducts, self).get_queryset().filter(status=1)
 
 
 class InSellProducts(models.Manager):
     def get_queryset(self):
-        return self.filter(status=2)
+        return super(InSellProducts, self).get_queryset().filter(status=2)
+
 
 class ProductsManager(models.Manager):
     pass
@@ -63,21 +82,8 @@ class Product(BasicInfo):
     sold_out_products = SoldOutProducts()
     in_sell_products = InSellProducts()
 
-    objects=ProductsManager()
+    objects = ProductsManager()
 
     class Meta:
         verbose_name = 'Product'
         verbose_name_plural = 'Products'
-        # unique_together = ('category','name')
-        # ordering = ('price',)
-# #классовый метод
-#     @classmethod
-#     def top_ten(cls):
-#         return cls.objects.all()[:10]
-# #instance method b.price_round()
-#     @property
-#     def price_round(self):
-#         return round(self.price, 3)
-#     #print(p.price_round())
-#     def __str__(self):
-#         return self.name
