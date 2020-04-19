@@ -6,9 +6,15 @@ from auth_.models import MyUser
 from django.db.models import signals
 
 
+class CategoryManager(models.Manager):
+    def for_user(self, user):
+        print("ok")
+        return self.filter(owner=user)
+
 
 class BasicInfo(models.Model):
     name = models.CharField(max_length=100)
+    owner = models.ForeignKey(MyUser, on_delete=models.CASCADE,default=1)
 
     class Meta:
         abstract = True
@@ -24,17 +30,7 @@ class NotTopCategories(models.Manager):
         return super(NotTopCategories, self).get_queryset().filter(status=False)
 
 
-class CategoryManager(models.Manager):
-    def for_user(self, user):
-        return self.filter(owner=user)
-
-
 class Category(BasicInfo):
-    # STATUS = (
-    #     (1, 'top'),
-    #     (2, 'not_top')
-    # )
-    owner = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     status = models.BooleanField(default=False)
     description = models.CharField(max_length=255, null=True, blank=True)
     image = models.ImageField(upload_to='images', null=True)
@@ -75,22 +71,21 @@ class InSellProducts(models.Manager):
 
 
 class ProductsManager(models.Manager):
-    pass
-
+    def for_user(self,user):
+        self.filter(owner= user)
 
 class Product(BasicInfo):
     STATUS = (
         (1, 'sold_out'),
         (2, 'in_sell')
     )
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='products')
     description = models.CharField(max_length=255)
     price = models.FloatField(default=0)
     status = models.IntegerField(choices=STATUS, default=2)
 
     sold_out_products = SoldOutProducts()
     in_sell_products = InSellProducts()
-
     objects = ProductsManager()
 
     class Meta:
@@ -103,7 +98,7 @@ class Product(BasicInfo):
     #  discount
     @property
     def get_with_discount(self):
-        return self.price-10
+        return self.price - 10
 
     @classmethod
     def get_sold_out_products_count(cls):
@@ -112,7 +107,6 @@ class Product(BasicInfo):
     @classmethod
     def get_in_sell_products_count(cls):
         return cls.in_sell_products.count()
-
 
 # b = Category()
 # b.get_count_of_top()

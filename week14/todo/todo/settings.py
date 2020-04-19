@@ -167,3 +167,52 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
     'JWT_AUTH_COOKIE': None,
 }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(levelname)s -- %(asctime)s: %(message)s',
+        },
+        'simple': {
+            'format': '%(levelname)s -- %(message)s'
+        }
+    },
+    'handlers': {
+        'test_file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'test.log',
+            'formatter': 'verbose'
+        },
+        'console_handler':{
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter':'simple'
+        },
+        'onlineshop_file':{
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'onlineshop.log',
+            'formatter': 'verbose'
+        },
+        'auth__file':{
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'auth_.log',
+            'formatter': 'verbose'
+        },
+
+    },
+    'loggers': {
+        'categories': {
+            'handlers': ['test_file', 'console_handler', 'onlineshop_file'],
+            'level': 'DEBUG',
+        },
+        'auth_': {
+            'handlers': ['auth__file',],
+            'level': 'DEBUG'
+        }
+
+    },
+}

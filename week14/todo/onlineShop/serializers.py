@@ -8,7 +8,6 @@ from auth_.serializers import UserSerializer
 class CategorySerializer(serializers.ModelSerializer):
     owner = UserSerializer(read_only=True)
 
-    # object-level validation
     def validate(self, data):
         if len(data['name']) < 3:
             raise serializers.ValidationError("name should contain at least 3 letters")
